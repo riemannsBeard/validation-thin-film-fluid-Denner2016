@@ -1,0 +1,78 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v1906                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volVectorField;
+    location    "0";
+    object      U;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 1 -1 0 0 0 0];
+
+
+internalField   uniform (0 -0.1689 0);
+
+boundaryField
+{
+    movingWall
+    {
+        type            noSlip;
+    }
+    inletWater
+    {
+        type            mySemiParabolicInletVelocity;
+        uN              -0.1689;
+        n               (0 1 0);
+        y               (1 0 0);
+        pert            sine;
+        pertCoeffs
+        {
+            t0              0;
+            amplitude       constant 0.05;
+            frequency       constant 20;
+            scale           constant 1;
+            level           constant 1;
+        }
+        value           uniform (0 -0.1689 0);
+    }
+    inletAir
+    {
+        type            myPulsatingInletVelocity;
+        uN              -0.1689;
+        n               (0 1 0);
+        pert            sine;
+        pertCoeffs
+        {
+            t0              0;
+            amplitude       constant 0.05;
+            frequency       constant 20;
+            scale           constant 1;
+            level           constant 1;
+        }
+        value           uniform (0 -0.1689 0);
+    }
+    outlets
+    {
+        type            advective;
+        value           uniform (0 -0.1689 0);
+    }
+    atmosphere
+    {
+        type            slip;
+    }
+    frontAndBack
+    {
+        type            empty;
+    }
+}
+
+
+// ************************************************************************* //
